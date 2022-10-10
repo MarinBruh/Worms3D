@@ -2,18 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEditor.Build.Content;
 
-public class PlayerMovementTutorial : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     [Header("Movement")]
     public float moveSpeed;
-
     public float groundDrag;
-
     public float jumpForce;
     public float jumpCooldown;
     public float airMultiplier;
     bool readyToJump;
+    public bool playerActive;
+    public Vector3 velocity;
 
     [HideInInspector] public float walkSpeed;
     [HideInInspector] public float sprintSpeed;
@@ -22,7 +23,8 @@ public class PlayerMovementTutorial : MonoBehaviour
     public KeyCode jumpKey = KeyCode.Space;
 
     [Header("Ground Check")]
-    public float playerHeight;
+    public Transform groundCheck;
+    public float groundRadius;
     public LayerMask whatIsGround;
     bool grounded;
 
@@ -45,17 +47,24 @@ public class PlayerMovementTutorial : MonoBehaviour
 
     private void Update()
     {
+        //MovePlayer();
+        
         // ground check
-        grounded = Physics.Raycast(transform.position, Vector3.down, playerHeight * 0.5f + 0.3f, whatIsGround);
+        grounded = Physics.CheckSphere(groundCheck.position, groundRadius, whatIsGround);
 
         MyInput();
         SpeedControl();
 
         // handle drag
         if (grounded)
+        {
             rb.drag = groundDrag;
+        }
         else
-            rb.drag = 0;
+        {
+            rb.drag = 0;  
+        }
+
     }
 
     private void FixedUpdate()
@@ -69,28 +78,33 @@ public class PlayerMovementTutorial : MonoBehaviour
         verticalInput = Input.GetAxisRaw("Vertical");
 
         // when to jump
-        if(Input.GetKey(jumpKey) && readyToJump && grounded)
+        if(Input.GetKey(jumpKey) && playerActive && readyToJump && grounded)
         {
             readyToJump = false;
 
             Jump();
 
             Invoke(nameof(ResetJump), jumpCooldown);
+            print("jumping");
         }
     }
 
     private void MovePlayer()
     {
-        // calculate movement direction
-        moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
+        if (playerActive && PlayerSwitcher.GM.State == GameState.Movement)
+        {
+                  // calculate movement direction
+                  moveDirection = orientation.forward * verticalInput + orientation.right * horizontalInput;
+          
+                  // on ground
+                  if(grounded)
+                      rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
+          
+                  // in air
+                  else if(!grounded)
+                      rb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);  
+        }
 
-        // on ground
-        if(grounded)
-            rb.AddForce(moveDirection.normalized * moveSpeed * 10f, ForceMode.Force);
-
-        // in air
-        else if(!grounded)
-            rb.AddForce(moveDirection.normalized * moveSpeed * 10f * airMultiplier, ForceMode.Force);
     }
 
     private void SpeedControl()
@@ -115,5 +129,14 @@ public class PlayerMovementTutorial : MonoBehaviour
     private void ResetJump()
     {
         readyToJump = true;
+    }
+    
+    // out of bounds
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Water")
+        {
+            Destroy(gameObject);
+        }
     }
 }
