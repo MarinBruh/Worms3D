@@ -13,19 +13,18 @@ public class BazookaScript : MonoBehaviour
     public AudioClip clip;
     public int rocketAmmo;
     public TMP_Text ammoUI;
-
-    public ThirdPersonCam thirdPersonCam;
+    
     void Awake()
     {
         cameraTransform = Camera.main.transform;
-        rocketAmmo = 1;
+        rocketAmmo = 2;
     }
 
     void Update()
     {
         ammoUI.SetText("Ammo: " + rocketAmmo.ToString("F0"));
         
-        if (Input.GetKeyDown(KeyCode.Mouse0) && thirdPersonCam.currentStyle == ThirdPersonCam.CameraStyle.Combat && rocketAmmo >= 1)
+        if (Input.GetKeyDown(KeyCode.Mouse0) && rocketAmmo >= 1)
         {
             ShootRocket();
             rocketAmmo--;

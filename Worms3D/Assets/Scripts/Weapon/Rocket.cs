@@ -11,25 +11,6 @@ public class Rocket : MonoBehaviour
     public AudioSource source;
     public AudioClip clip;
 
-    //private float countdown;
-    //public float delay = 3.0f;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        //countdown = delay;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-       // countdown -= Time.deltaTime;
-       // if (countdown <= 0.0f)
-        //{
-        //    Explode();
-       // }
-    }
-
     void Explode()
     {
         Instantiate(explosionEffect, transform.position, transform.rotation);
@@ -55,10 +36,10 @@ public class Rocket : MonoBehaviour
                 PlayerSwitcher.GM.Damage();
 
                 //Damage to Player
-                int damage = (int)Math.Round(force / 2);
+                //int damage = (int)Math.Round(force / 2);
 
                 //playerHealth.currentHealth = playerHealth.currentHealth - damage;
-                playerHealth.TakeDamage(damage);
+                //playerHealth.TakeDamage(damage);
                 
                 source.PlayOneShot(clip);
             }

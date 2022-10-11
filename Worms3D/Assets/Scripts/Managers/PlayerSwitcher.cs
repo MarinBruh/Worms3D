@@ -20,15 +20,11 @@ public enum GameState
 
 public class PlayerSwitcher : MonoBehaviour
 {
-    public bool teamOneActive;
-    public bool teamTwoActive;
     public bool roundEnd;
     public GameObject[] players;
-    public GameObject[] cameras;
-    public GameObject[] teamOne;
-    public GameObject[] teamTwo;
+    public GameObject[] one;
+    public GameObject[] two;
     private int currentPlayerIndex;
-    private int currentCameraIndex;
     public bool isActive;
     public static PlayerSwitcher GM;
     public GameState State { get; private set; }
@@ -36,8 +32,6 @@ public class PlayerSwitcher : MonoBehaviour
     public float maxRoundTime = 20;
     public TMP_Text roundTimerText; 
     
-    public Slider teamOneHealth;
-    public Slider teamTwoHealth;
 
     
     // Start is called before the first frame update
@@ -47,15 +41,10 @@ public class PlayerSwitcher : MonoBehaviour
         State = GameState.Movement;
         roundTimer = maxRoundTime;
         currentPlayerIndex = 0;
-        currentCameraIndex = 0;
-        
-        teamOneHealth.maxValue = 200;
-        teamTwoHealth.maxValue = 200;
 
         for (int i = 1; i < players.Length; i++)
         {
             players[i].GetComponent<PlayerController>().playerActive = false;
-            
         }
 
         if (players.Length > 0)
@@ -73,14 +62,6 @@ public class PlayerSwitcher : MonoBehaviour
         }
         
         //print(State);
-        
-        teamOneHealth.value = PlayerSwitcher.GM.teamOne[0].GetComponent<PlayerHealth>().currentHealth +
-                          PlayerSwitcher.GM.teamOne[1].GetComponent<PlayerHealth>().currentHealth;
-        teamTwoHealth.value = PlayerSwitcher.GM.teamTwo[0].GetComponent<PlayerHealth>().currentHealth +
-                             PlayerSwitcher.GM.teamTwo[1].GetComponent<PlayerHealth>().currentHealth;
-
-        //teamOneHealthSlider.value = playerHealth PlayerHealth.currentHealth;
-        //teamTwoHealthSlider.value = playerHealth PlayerHealth.currentHealth;
     }
 
     void HandleRound()
@@ -91,73 +72,35 @@ public class PlayerSwitcher : MonoBehaviour
         if (players[currentPlayerIndex].GetComponent<PlayerHealth>().isDead == true)
         {
             print("A player died");
-            roundTimer = 0;
+            //roundTimer = 0;
         }
         
         if (roundTimer <= 0)
         {
-            if (roundEnd)
-            {
-
-                roundTimer = 5;
-                GM.State = GameState.EndOfRound;
-                roundEnd = false;
-
-            }
-            else
             {
                 if (GM.State == GameState.Movement)
-                {
+                { 
                     currentPlayerIndex++;
-                    currentCameraIndex++;
-                    if (currentPlayerIndex < players.Length && currentCameraIndex < cameras.Length)
+                    if (currentPlayerIndex < players.Length)
                     {
                         players[currentPlayerIndex - 1].GetComponent<PlayerController>().playerActive = false;
                         players[currentPlayerIndex].GetComponent<PlayerController>().playerActive = true;
 
-                        cameras[currentCameraIndex - 1].gameObject.SetActive(false);
-                        cameras[currentCameraIndex].gameObject.SetActive(true);
-
-
-                        players[currentPlayerIndex].GetComponent<BazookaScript>().rocketAmmo = 1;
+                        //players[currentPlayerIndex].GetComponent<BazookaScript>().rocketAmmo = 1;
                     }
                     else
                     {
                         players[currentPlayerIndex - 1].GetComponent<PlayerController>().playerActive = false;
-                        currentPlayerIndex = 0;
+                        currentPlayerIndex = 0; 
                         players[currentPlayerIndex].GetComponent<PlayerController>().playerActive = true;
                         
-                        cameras[currentCameraIndex - 1].gameObject.SetActive(false);
-                        currentCameraIndex = 0;
-                        cameras[currentCameraIndex].gameObject.SetActive(true);
-
-                        players[currentPlayerIndex].GetComponent<BazookaScript>().rocketAmmo = 1;
+                        //players[currentPlayerIndex].GetComponent<BazookaScript>().rocketAmmo = 1;
                     }
-                    
                     roundTimer = maxRoundTime;
                 }
                 else
                 {
                     roundTimer = 0;
-                }
-
-
-                if (GM.State == GameState.Movement)
-                {
-                    if (teamOneActive)
-                    {
-                        teamOneActive = false;
-                        teamTwoActive = true;
-                    }
-                    else
-                    {
-                        teamOneActive = true;
-                        teamTwoActive = false;
-                    }
-                }
-                else
-                {
-                    //roundTimer = 0;
                 }
             }
         }
@@ -187,5 +130,4 @@ public class PlayerSwitcher : MonoBehaviour
     {
         State = GameState.StartOfRound;
     }
-
 }
