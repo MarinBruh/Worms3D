@@ -36,10 +36,10 @@ public class Rocket : MonoBehaviour
                 
 
                 //Damage to Player
-                //int damage = (int)Math.Round(force / 2);
+                int damage = (int)Math.Round(force / 5);
 
-                //playerHealth.currentHealth = playerHealth.currentHealth - damage;
-                //playerHealth.TakeDamage(damage);
+                playerHealth.currentHealth = playerHealth.currentHealth - damage;
+                playerHealth.TakeDamage(damage);
                 
                 source.PlayOneShot(clip);
             }

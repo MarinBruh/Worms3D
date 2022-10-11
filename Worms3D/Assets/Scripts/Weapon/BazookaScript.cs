@@ -18,13 +18,14 @@ public class BazookaScript : MonoBehaviour
     {
         cameraTransform = Camera.main.transform;
         rocketAmmo = 2;
+        
     }
 
     void Update()
     {
         ammoUI.SetText("Ammo: " + rocketAmmo.ToString("F0"));
         
-        if (Input.GetKeyDown(KeyCode.Mouse0) && rocketAmmo >= 1)
+        if (Input.GetKeyDown(KeyCode.Mouse0) && rocketAmmo >= 1 && Time.timeScale == 1)
         {
             ShootRocket();
             rocketAmmo--;

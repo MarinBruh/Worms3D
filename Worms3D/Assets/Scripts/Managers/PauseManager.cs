@@ -11,6 +11,7 @@ using UnityEditor;
 public class PauseManager : MonoBehaviour 
 {
 	Canvas canvas;
+	public bool isPaused;
 	
 	void Start()
 	{
@@ -21,20 +22,31 @@ public class PauseManager : MonoBehaviour
 	
 	void Update()
 	{
-		if (Input.GetKeyDown(KeyCode.Escape))
+		if (Input.GetKeyDown(KeyCode.Escape) && !isPaused)
 		{
-			canvas.enabled = !canvas.enabled;
+			isPaused = true;
 			Pause();
-			Cursor.visible = false;
-			Cursor.lockState = CursorLockMode.Locked;
+		}
+		else if(Input.GetKeyDown(KeyCode.Escape) && isPaused)
+		{
+			isPaused = false;
+			UnPause();
 		}
 	}
 	
 	public void Pause()
 	{
-		Time.timeScale = Time.timeScale == 0 ? 1 : 0;
+		canvas.enabled = !canvas.enabled;
+		Time.timeScale = 0;
 		Cursor.visible = true;
 		Cursor.lockState = CursorLockMode.None;
+	}
+	public void UnPause()
+	{
+		canvas.enabled = false;
+		Time.timeScale = 1;
+		Cursor.visible = false;
+		Cursor.lockState = CursorLockMode.Locked;
 	}
 
 	public void Play()

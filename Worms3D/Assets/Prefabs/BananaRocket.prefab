@@ -78,7 +78,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radius: 5
-  force: 5000
+  force: 100
   explosionEffect: {fileID: 5287220260459587024, guid: ead115b44058c73498fb7aa58979570d,
     type: 3}
   source: {fileID: 6908959132006030306}

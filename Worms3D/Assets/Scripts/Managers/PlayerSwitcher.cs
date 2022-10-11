@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
@@ -8,10 +7,9 @@ using UnityEngine.UI;
 public enum GameState
 {
     Movement,
-    Weapon,
     Observing,
-    Damage,
     Killing,
+    Damage,
     Drop,
     EndOfRound,
     StartOfRound
@@ -30,10 +28,8 @@ public class PlayerSwitcher : MonoBehaviour
     public GameState State { get; private set; }
     public float roundTimer;
     public float maxRoundTime = 20;
-    public TMP_Text roundTimerText; 
-    
+    public TMP_Text roundTimerText;
 
-    
     // Start is called before the first frame update
     void Start()
     {
@@ -67,12 +63,12 @@ public class PlayerSwitcher : MonoBehaviour
     void HandleRound()
     {
         roundTimer -= Time.deltaTime;
-        roundTimerText.SetText(roundTimer.ToString("F0"));
+        roundTimerText.SetText("Time Left: " + roundTimer.ToString("F0"));
 
-        if (players[currentPlayerIndex].GetComponent<PlayerHealth>().isDead == true)
+        if (players[currentPlayerIndex].GetComponent<PlayerHealth>().currentHealth <= 0)
         {
             print("A player died");
-            //roundTimer = 0;
+            roundTimer = 0;
         }
         
         if (roundTimer <= 0)
@@ -85,6 +81,7 @@ public class PlayerSwitcher : MonoBehaviour
                     {
                         players[currentPlayerIndex - 1].GetComponent<PlayerController>().playerActive = false;
                         players[currentPlayerIndex].GetComponent<PlayerController>().playerActive = true;
+
 
                         //players[currentPlayerIndex].GetComponent<BazookaScript>().rocketAmmo = 1;
                     }

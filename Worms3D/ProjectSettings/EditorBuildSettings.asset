@@ -11,4 +11,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MainGame.unity
     guid: 7055a70d7e9c27147ad71da4b3c164c0
+  - enabled: 1
+    path: Assets/Scenes/BlueWin.unity
+    guid: 58ad07b389108ed439c31ed990fc9408
+  - enabled: 1
+    path: Assets/Scenes/RedWin.unity
+    guid: 3a4003c0934c1ae48a6ff81f393c5fc1
   m_configObjects: {}
