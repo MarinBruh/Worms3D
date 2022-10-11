@@ -141,7 +141,7 @@ public class PlayerController : MonoBehaviour
     {
         if (other.gameObject.tag == "Water")
         {
-            GetComponent<PlayerHealth>().isDead = true;
+            GetComponent<PlayerHealth>().currentHealth = 0;
             gameObject.SetActive(false);
         }
     }

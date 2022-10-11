@@ -33,7 +33,7 @@ public class Rocket : MonoBehaviour
 
             if (nearbyObject.CompareTag("Player"))
             {
-                PlayerSwitcher.GM.Damage();
+                
 
                 //Damage to Player
                 //int damage = (int)Math.Round(force / 2);

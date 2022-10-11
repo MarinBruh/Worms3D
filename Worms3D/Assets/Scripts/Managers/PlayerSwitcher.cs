@@ -61,7 +61,7 @@ public class PlayerSwitcher : MonoBehaviour
             HandleRound();
         }
         
-        //print(State);
+        print(State);
     }
 
     void HandleRound()
