@@ -36,6 +36,7 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
+        //Invoke("MovePlayer", 2.0f);
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
 
@@ -68,6 +69,7 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        //Invoke("MovePlayer", 5.0f);
         MovePlayer();
     }
 
@@ -141,7 +143,10 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.tag == "Water")
         {
             GetComponent<PlayerHealth>().currentHealth = 0;
-            gameObject.SetActive(false);
+            if (GetComponent<PlayerHealth>().currentHealth <= 0)
+            {
+                gameObject.SetActive(false);   
+            }
         }
     }
 } 
